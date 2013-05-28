@@ -58,5 +58,35 @@ db.colletion_name.find(field_name="value", field2_name="value2")
 
 db.colletion_name.find(age__in=[18, 19, 20])
 # -> db.colletion_name.find({'age': {'$in': [18, 19, 20]}})
+
+db.colletion_name.find(date__lt=now)
+# -> db.colletion_name.find({"date": {"$lt": d}})
+
+...
+# -> db.colletion_name.findOne({
+#      $or: [
+#        {'name.first' : /^G/},
+#        {birth: {$lt: new Date('01/01/1945')}}
+#      ]
+#    })
+
+#
+# Operarions with queryset
+#
+
+query_set = db.colletion_name.find()
+
+query_set.sort("author")
+# -> query_set.sort({author: 1})
+
+query_set.sort("author", "-date")
+# -> query_set.sort({author: 1, date: 0})
+
+query_set[:5]
+# -> query_set.limit(5)
+
+query_set[3:5]
+# -> query_set.skip(3).limit(2)
+
 ```
 
