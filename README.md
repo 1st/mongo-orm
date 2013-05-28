@@ -19,7 +19,7 @@ db.colletion_name.count()
 db.colletion_name.find(field_name="value", field2_name="value2")
 # -> db.colletion_name.find({field_name: "value", field2_name: "value2"})
 
-db.colletion_name.find(field_name="value", age__in=[18, 19, 20], )
+db.colletion_name.find(age__in=[18, 19, 20], )
 # -> db.colletion_name.find({'age': {'$in': [18, 19, 20]}})
 ```
 
