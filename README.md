@@ -63,7 +63,7 @@ from models import User, Blog
 validate_email_user_form = Form(User, fields=['email'])
 create_user_form = Form(User, fields=['nick', 'password'])
 edit_user_form = Form(User, fields=['email', 'password', 'name'])
-edit_birthday_user_form = Form(User, fields=['birthday'], widgets={'birthday': widgets.SplitDateTimeWisget})
+edit_birthday_user_form = Form(User, fields=['birthday'], widgets={'birthday': widgets.SplitDateTimeWidget})
 ```
 
 
