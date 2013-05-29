@@ -109,7 +109,7 @@ query_set.sort("author")
 # -> query_set.sort({author: 1})
 
 query_set.sort("author", "-date")
-# -> query_set.sort({author: 1, date: 0})
+# -> query_set.sort({author: 1, date: -1})
 
 query_set[:5]
 # -> query_set.limit(5)
