@@ -31,6 +31,7 @@ class User(Model):
         'email': fields.TextField(check_email=True),
         'password': fields.TextField(check_length=32),
         'name': fields.TextField(),
+        'birthday': fields.DateTime(),
     }
     required_fields = ('email', 'nick', 'password')
     key_field = 'nick'
@@ -55,11 +56,14 @@ With forms we can filter data, that should be passed to Model.
 
 ```python
 # forms.py
-from mongo_orm import Form
+from mongo_orm import Form, widgets
 from models import User, Blog
 
 
-create_user_form = Form(User, fields=['email'])
+validate_email_user_form = Form(User, fields=['email'])
+create_user_form = Form(User, fields=['nick', 'password'])
+edit_user_form = Form(User, fields=['email', 'password', 'name'])
+edit_birthday_user_form = Form(User, fields=['birthday'], widgets={'birthday': widgets.SplitDateTimeWisget})
 ```
 
 
