@@ -21,33 +21,58 @@ We need to create operation that synchronize changes between model and appropria
 This operation should be completed as deferred task.
 
 ```python
-from mongo_orm import Model, fields
+# models.py
+from mongo_orm import Model, fields, validators
 
 
 class User(Model):
     fields = {
-        'nick': fields.TextField(min_length=2, max_length=20),
-        'password': fields.TextField(length=32),
+        'nick': fields.TextField(check_min_length=2, check_max_length=20),
+        'email': fields.TextField(check_email=True),
+        'password': fields.TextField(check_length=32),
         'name': fields.TextField(),
     }
-    required_fields = ('nick', 'password')
+    required_fields = ('email', 'nick', 'password')
     key_field = 'nick'
+    unique_fields = ('email')
 
 
 class Blog(Model):
     fields = {
-        'title': fields.TextField(min_length=20, max_length=500),
-        'text': fields.TextField(min_length=50, max_length=10000),
+        'title': fields.TextField(check_min_length=20, check_max_length=500),
+        'text': fields.TextField(check_min_length=50, check_max_length=10000),
         'author': fields.Reference(User),
     }
     required_fields = ('title', 'text', 'author')
     unique_fields = ('title')
 ```
 
+
+Forms
+--------
+
+With forms we can filter data, that should be passed to Model.
+
+```python
+# forms.py
+from mongo_orm import Form
+from models import User, Blog
+
+
+create_user_form = Form(User, fields=['email'])
+```
+
+
 Find
 --------
 
 ```python
+from mongo_orm import OR, Connection
+
+# create connection to MongoDB and select database
+db = Connection('localhost', 'user', '*****')
+db = db.database_name
+
 # basic operations
 db.colletion_name.find()
 db.colletion_name.find_one()
@@ -62,8 +87,8 @@ db.colletion_name.find(age__in=[18, 19, 20])
 db.colletion_name.find(date__lt=now)
 # -> db.colletion_name.find({"date": {"$lt": d}})
 
-...
-# -> db.colletion_name.findOne({
+db.colletion_name.find(OR(name_first__startwith='G', birth__lt=now))
+# -> db.colletion_name.find({
 #      $or: [
 #        {'name.first' : /^G/},
 #        {birth: {$lt: new Date('01/01/1945')}}
