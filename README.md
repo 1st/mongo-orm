@@ -7,6 +7,19 @@ In other words - it's Django ORM but designed only for MongoDB.
 **Current state**: Alpha, not production ready, under development
 
 
+Some examples
+--------
+
+```python
+from mongo import orm, fields as f, AND, OR, NOT
+
+result = orm.news.find(f.name=='mike', OR(f.age<=18, f.age>=60, AND(f.superuser==True, f.active=True))
+
+# or mybe
+result = orm.news.find(f.name=='mike' and (f.age<=18 or f.age>=60 or (f.superuser==True and f.active=True)))
+```
+
+
 Describe models
 --------
 
